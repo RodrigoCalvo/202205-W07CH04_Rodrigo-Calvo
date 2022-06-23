@@ -36,8 +36,8 @@ export class DataController {
     };
 
     deleteController = async (req: Request, resp: Response) => {
-        const { status } = await this.model.delete(req.params.id);
-        resp.status(status);
+        const success = await this.model.delete(req.params.id);
+        resp.status(success ? 202 : 404);
         resp.end(JSON.stringify({}));
     };
 }
