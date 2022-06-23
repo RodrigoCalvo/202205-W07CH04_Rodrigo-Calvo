@@ -1,5 +1,5 @@
-import { IOService } from '../services/io.service';
-import { DataModel } from './data.model';
+import { IOService } from '../services/io.service.js';
+import { DataModel } from './data.model.js';
 
 export interface iNote {
     id: string;
@@ -13,22 +13,22 @@ export class Note extends DataModel<iNote> implements iNote {
     author!: string;
     content!: string;
     important!: boolean;
-    constructor(public myIOService: IOService) {
+    constructor(public myIOService: IOService<iNote>) {
         super();
     }
-    findAll(): Promise<iNote[]> {
-        throw new Error('Method not implemented.');
+    async findAll(): Promise<iNote[]> {
+        return (await this.myIOService.find()) as iNote[];
     }
-    find(id: string): Promise<iNote> | undefined {
-        throw new Error('Method not implemented.');
+    async find(id: string): Promise<iNote | undefined> {
+        return (await this.myIOService.find(id)) as iNote;
     }
-    create(data: Partial<iNote>): Promise<iNote> {
-        throw new Error('Method not implemented.');
+    async create(data: Partial<iNote>): Promise<iNote['id']> {
+        return await this.myIOService.create(data);
     }
-    update(id: string, data: Partial<iNote>): Promise<iNote> {
-        throw new Error('Method not implemented.');
+    async update(id: string, data: Partial<iNote>): Promise<iNote> {
+        return await this.myIOService.update(id, data);
     }
-    delete(id: string): { status: number } {
-        throw new Error('Method not implemented.');
+    async delete(id: string): Promise<boolean> {
+        return await this.myIOService.delete(id);
     }
 }
